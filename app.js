@@ -49,6 +49,22 @@ app.post("/registration",async(req,res)=>{
         res.status(404).send(error)
     }
 })
+app.post("/login",async(req,res)=>{
+    try {
+        
+        const userEmail=req.body.email;
+        const userPassword=req.body.password;
+        const loginUser=await User.findOne({email:userEmail})
+        if(loginUser.password===userPassword){
+            res.status(201).sendFile(path.join(__dirname, 'templates', 'output.html'));
+        }
+        else{
+            res.send('<script>alert("Invalid Credentials!");</script>')
+        }
+    } catch (error) {
+        res.status(400).send('<script>alert("Invalid Credentials!");</script>')
+    }
+})
 app.listen(port,()=>{
     console.log(port)
 })
